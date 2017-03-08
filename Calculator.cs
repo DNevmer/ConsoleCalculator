@@ -15,27 +15,36 @@ namespace ConsoleCalc
         {
             List<string> separateStringList = new List<string>();
             int position = 0;
+            bool flag = false;//флаг проверки унарного минуса
             while (position < inputString.Length)
             {
-                if (inputString[position] == ' ')
+                inputString = inputString.Replace(" ", String.Empty);//удаляет пробелы из входящей строки
+                string tempS = inputString[position].ToString();
+                if ((inputString[position] == '-' && separateStringList.Count == 0) || (inputString[position] == '-' && inputString[position - 1] == '('))
+                {//проверка на унарный минус в начале выражения или после скобки                        
                     position++;
-                else
-                {
-                    string tempS = inputString[position].ToString();
-                    if (!operators.Contains(inputString[position].ToString()))
-                    {
-                        if (Char.IsDigit(inputString[position]))
-                            for (int i = position + 1; i < inputString.Length && (Char.IsDigit(inputString[i]) || inputString[i] == ',' || inputString[i] == '.'); i++)
-                            {
-                                if (inputString[i] == '.')
-                                    tempS += ',';
-                                else
-                                    tempS += inputString[i];
-                            }
-                    }
-                    separateStringList.Add(tempS);
-                    position += tempS.Length;
+                    tempS += inputString[position].ToString();
+                    flag = true;
                 }
+                if (!operators.Contains(inputString[position].ToString()))
+                {
+                    if (Char.IsDigit(inputString[position]))
+                        for (int i = position + 1; i < inputString.Length && (Char.IsDigit(inputString[i]) || inputString[i] == ',' || inputString[i] == '.'); i++)
+                        {
+                            if (inputString[i] == '.')
+                                tempS += ',';
+                            else
+                                tempS += inputString[i];
+                        }
+                }
+                separateStringList.Add(tempS);
+                if (flag)
+                {
+                    position += tempS.Length - 1;
+                    flag = false;
+                }
+                else
+                    position += tempS.Length;
             }
             return separateStringList;
         }
