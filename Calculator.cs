@@ -16,9 +16,9 @@ namespace ConsoleCalc
             List<string> separateStringList = new List<string>();
             int position = 0;
             bool flag = false;//флаг проверки унарного минуса
+            inputString = inputString.Replace(" ", String.Empty);//удаляет пробелы из входящей строки
             while (position < inputString.Length)
-            {
-                inputString = inputString.Replace(" ", String.Empty);//удаляет пробелы из входящей строки
+            {                
                 string tempS = inputString[position].ToString();
                 if ((inputString[position] == '-' && separateStringList.Count == 0) || (inputString[position] == '-' && inputString[position - 1] == '('))
                 {//проверка на унарный минус в начале выражения или после скобки                        
